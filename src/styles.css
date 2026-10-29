@@ -7,6 +7,11 @@
   --color-accent-hover: #0550ae;
   --color-error: #cf222e;
   --color-warning: #9a6700;
+  --cloud-1: #0969da;
+  --cloud-2: #1a7f37;
+  --cloud-3: #8250df;
+  --cloud-4: #bc4c00;
+  --cloud-5: #0550ae;
   font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
   color: var(--color-text);
   line-height: 1.5;
@@ -192,6 +197,10 @@ td:first-child {
     display: none;
   }
 
+  .chart-cloud {
+    height: 280px;
+  }
+
   th:last-child,
   td:last-child {
     width: 6rem;
@@ -205,9 +214,44 @@ td:first-child {
   border-radius: 6px;
 }
 
-.chart figcaption {
-  margin-bottom: 0.5rem;
+.chart-header {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.75rem;
   font-weight: 600;
+}
+
+.view-toggle {
+  display: inline-flex;
+  border: 1px solid var(--color-border);
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+.view-toggle button {
+  padding: 0.3rem 0.9rem;
+  border: none;
+  background: var(--color-surface);
+  color: var(--color-text);
+  font: inherit;
+  font-size: 0.875rem;
+  cursor: pointer;
+}
+
+.view-toggle button + button {
+  border-left: 1px solid var(--color-border);
+}
+
+.view-toggle button[aria-pressed='true'] {
+  background: var(--color-accent);
+  color: #fff;
+}
+
+.chart-cloud {
+  height: 360px;
 }
 
 .chart-canvas {

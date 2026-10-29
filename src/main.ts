@@ -1,7 +1,7 @@
 import './styles.css';
 import type { WordCount } from './core/types';
 import { countWords, summarize } from './core/wordFrequency';
-import { createFrequencyChart } from './ui/chart';
+import { createChartPanel } from './ui/chartPanel';
 import { setupForm, showError, type FormElements } from './ui/form';
 import { renderSummary } from './ui/summary';
 import { renderTable } from './ui/table';
@@ -21,10 +21,14 @@ const formElements: FormElements = {
 };
 const summaryElement = getElement<HTMLElement>('#summary');
 const tbody = getElement<HTMLTableSectionElement>('#frequency-table tbody');
-const chart = createFrequencyChart({
+const chart = createChartPanel({
   container: getElement<HTMLElement>('#chart-container'),
-  canvasWrapper: getElement<HTMLElement>('#chart-wrapper'),
-  canvas: getElement<HTMLCanvasElement>('#frequency-chart'),
+  caption: getElement<HTMLElement>('#chart-caption'),
+  toggleButtons: [...document.querySelectorAll<HTMLButtonElement>('.view-toggle button')],
+  barWrapper: getElement<HTMLElement>('#bar-wrapper'),
+  barCanvas: getElement<HTMLCanvasElement>('#bar-chart'),
+  cloudWrapper: getElement<HTMLElement>('#cloud-wrapper'),
+  cloudCanvas: getElement<HTMLCanvasElement>('#cloud-chart'),
 });
 
 function showResults(rows: WordCount[]): void {

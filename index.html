@@ -35,9 +35,18 @@
         <h2 id="results-title">Frequência das palavras</h2>
         <p id="summary" class="summary" aria-live="polite"></p>
         <figure id="chart-container" class="chart" hidden>
-          <figcaption>As 15 palavras mais frequentes</figcaption>
-          <div id="chart-wrapper" class="chart-canvas">
-            <canvas id="frequency-chart" role="img"></canvas>
+          <figcaption class="chart-header">
+            <span id="chart-caption"></span>
+            <span class="view-toggle" role="group" aria-label="Tipo de gráfico">
+              <button type="button" data-view="bar" aria-pressed="true">Barras</button>
+              <button type="button" data-view="cloud" aria-pressed="false">Nuvem</button>
+            </span>
+          </figcaption>
+          <div id="bar-wrapper" class="chart-canvas">
+            <canvas id="bar-chart" role="img"></canvas>
+          </div>
+          <div id="cloud-wrapper" class="chart-canvas chart-cloud" hidden>
+            <canvas id="cloud-chart" role="img"></canvas>
           </div>
         </figure>
         <div class="table-wrapper">

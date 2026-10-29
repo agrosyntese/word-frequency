@@ -32,7 +32,7 @@ Guia para trabalhar neste repositório. A especificação original está em [APP
 | Build/dev | Vite |
 | Linguagem | TypeScript (strict) |
 | UI | HTML + CSS + TS puro, sem framework |
-| Gráfico | Chart.js |
+| Gráficos | Chart.js + chartjs-chart-wordcloud |
 | Testes | Vitest |
 | Bônus URL | Função serverless (Vercel) + `cheerio` |
 | Deploy | Vercel |
@@ -55,12 +55,18 @@ WORLD_FRE/
 │   ├── core/               # lógica pura, sem DOM
 │   │   ├── wordFrequency.ts
 │   │   ├── wordFrequency.test.ts
+│   │   ├── wordCloud.ts    # escala frequência → tamanho da fonte
+│   │   ├── wordCloud.test.ts
 │   │   ├── stopwords.ts    # (Fase 5)
 │   │   └── types.ts
 │   └── ui/                 # tudo que manipula o DOM
 │       ├── form.ts         # textarea, contador, validação, erro
 │       ├── table.ts        # renderização da tabela
-│       └── chart.ts        # (Fase 4) gráfico Chart.js
+│       ├── summary.ts      # resumo "N palavras · M únicas"
+│       ├── chartPanel.ts   # painel com seletor Barras | Nuvem
+│       ├── chartUtils.ts   # helpers comuns aos gráficos
+│       ├── barChart.ts     # gráfico de barras (top 15)
+│       └── wordCloud.ts    # nuvem de palavras (top 60)
 └── public/                 # assets estáticos
 ```
 
@@ -86,6 +92,7 @@ Antes de considerar uma tarefa concluída, rode `npm run typecheck` e `npm test 
 - [x] **Fase 2: MVP**: textarea com `maxlength=2048`, botão, tabela, erro para texto vazio. *Ao final, todas as user stories estão cumpridas*
 - [x] **Fase 3: UX**: contador de caracteres, botão Limpar, totais, layout responsivo, acessibilidade, estado vazio da tabela
 - [x] **Fase 4: Gráfico**: barras com as 15 palavras mais frequentes (Chart.js), atualizado a cada análise
+- [x] **Fase 4.1: Nuvem de palavras**: seletor Barras | Nuvem, nuvem com as 60 palavras mais frequentes (chartjs-chart-wordcloud)
 - [ ] **Fase 5: Extras (opcional)**: stopwords PT/EN com opção de ligar e desligar, filtro na tabela, exportar CSV
 - [ ] **Fase 6: URL**: `api/fetch-text.ts` busca o HTML, remove `script`/`style`/`nav` e extrai o texto. Alternância Texto/URL no front, com loading e erros
 - [ ] **Fase 7: Deploy**: publicar na Vercel, README com capturas de tela
@@ -105,6 +112,7 @@ Marque a fase como concluída neste arquivo ao terminá-la.
 - `src/core/` é **pura**: sem acesso a DOM, `window` ou rede. Toda regra de contagem fica aqui e tem teste
 - `src/ui/` só renderiza e captura eventos, delegando a lógica para `core/`
 - Tipo central: `type WordCount = { word: string; count: number }`
+- A nuvem é criada só na primeira exibição com dados: o plugin quebra se for criado sem palavras ou num canvas escondido. Não usar `fit: true` (corta palavras)
 
 ### Segurança
 - Nunca inserir texto do usuário com `innerHTML`; usar `textContent` ou `createElement`
