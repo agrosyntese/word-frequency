@@ -57,12 +57,15 @@ WORLD_FRE/
 │   │   ├── wordFrequency.test.ts
 │   │   ├── wordCloud.ts    # escala frequência → tamanho da fonte
 │   │   ├── wordCloud.test.ts
-│   │   ├── stopwords.ts    # (Fase 5)
+│   │   ├── stopwords.ts    # palavras comuns PT/EN
+│   │   ├── filter.ts       # filtro sem acento / maiúscula
+│   │   ├── csv.ts          # exportação (separador ; + BOM)
 │   │   └── types.ts
 │   └── ui/                 # tudo que manipula o DOM
 │       ├── form.ts         # textarea, contador, validação, erro
 │       ├── table.ts        # renderização da tabela
 │       ├── summary.ts      # resumo "N palavras · M únicas"
+│       ├── toolbar.ts      # status do filtro e download do CSV
 │       ├── chartPanel.ts   # painel com seletor Barras | Nuvem
 │       ├── chartUtils.ts   # helpers comuns aos gráficos
 │       ├── barChart.ts     # gráfico de barras (top 15)
@@ -93,7 +96,7 @@ Antes de considerar uma tarefa concluída, rode `npm run typecheck` e `npm test 
 - [x] **Fase 3: UX**: contador de caracteres, botão Limpar, totais, layout responsivo, acessibilidade, estado vazio da tabela
 - [x] **Fase 4: Gráfico**: barras com as 15 palavras mais frequentes (Chart.js), atualizado a cada análise
 - [x] **Fase 4.1: Nuvem de palavras**: seletor Barras | Nuvem, nuvem com as 60 palavras mais frequentes (chartjs-chart-wordcloud)
-- [ ] **Fase 5: Extras (opcional)**: stopwords PT/EN com opção de ligar e desligar, filtro na tabela, exportar CSV
+- [x] **Fase 5: Extras (opcional)**: stopwords PT/EN com opção de ligar e desligar, filtro na tabela, exportar CSV
 - [ ] **Fase 6: URL**: `api/fetch-text.ts` busca o HTML, remove `script`/`style`/`nav` e extrai o texto. Alternância Texto/URL no front, com loading e erros
 - [ ] **Fase 7: Deploy**: publicar na Vercel, README com capturas de tela
 
@@ -116,6 +119,7 @@ Marque a fase como concluída neste arquivo ao terminá-la.
 
 ### Segurança
 - Nunca inserir texto do usuário com `innerHTML`; usar `textContent` ou `createElement`
+- Elementos com `display` definido no CSS dependem da regra global `[hidden] { display: none !important }` para o atributo `hidden` funcionar
 - Na função de URL (Fase 6): aceitar só `http:`/`https:`, bloquear `localhost` e IPs privados (SSRF), usar timeout de 5 s e limitar o tamanho da resposta
 
 ### Testes

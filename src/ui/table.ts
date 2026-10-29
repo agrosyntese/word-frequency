@@ -1,10 +1,8 @@
 import type { WordCount } from '../core/types';
 
-const EMPTY_MESSAGE = 'Nenhuma análise ainda. Digite um texto e clique em Translate.';
-
-export function renderTable(tbody: HTMLTableSectionElement, rows: WordCount[]): void {
+export function renderTable(tbody: HTMLTableSectionElement, rows: WordCount[], emptyMessage: string): void {
   if (rows.length === 0) {
-    tbody.replaceChildren(createEmptyRow());
+    tbody.replaceChildren(createEmptyRow(emptyMessage));
     return;
   }
 
@@ -23,12 +21,12 @@ export function renderTable(tbody: HTMLTableSectionElement, rows: WordCount[]): 
   tbody.replaceChildren(fragment);
 }
 
-function createEmptyRow(): HTMLTableRowElement {
+function createEmptyRow(message: string): HTMLTableRowElement {
   const tr = document.createElement('tr');
   const td = document.createElement('td');
   td.colSpan = 2;
   td.className = 'empty-state';
-  td.textContent = EMPTY_MESSAGE;
+  td.textContent = message;
   tr.append(td);
   return tr;
 }

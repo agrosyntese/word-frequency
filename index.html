@@ -24,6 +24,10 @@
           <p id="error-message" class="error" role="alert" hidden></p>
           <p id="char-counter" class="counter">0 / 2048</p>
         </div>
+        <label class="checkbox">
+          <input type="checkbox" id="stopwords-toggle" />
+          Ignorar palavras comuns <span class="hint">(o, de, que, the, and…)</span>
+        </label>
         <div class="actions">
           <button type="submit" class="btn btn-primary">Translate</button>
           <button type="button" id="clear-button" class="btn btn-secondary">Limpar</button>
@@ -49,6 +53,12 @@
             <canvas id="cloud-chart" role="img"></canvas>
           </div>
         </figure>
+        <div id="table-toolbar" class="table-toolbar" hidden>
+          <label for="filter-input" class="visually-hidden">Filtrar palavras da tabela</label>
+          <input type="search" id="filter-input" placeholder="Filtrar palavras…" autocomplete="off" />
+          <span id="filter-status" class="filter-status" aria-live="polite"></span>
+          <button type="button" id="export-button" class="btn btn-secondary">Exportar CSV</button>
+        </div>
         <div class="table-wrapper">
           <table id="frequency-table">
             <thead>

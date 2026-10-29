@@ -1,14 +1,20 @@
 import type { Summary } from '../core/types';
 
-export function renderSummary(element: HTMLElement, summary: Summary): void {
+function plural(count: number, singular: string, pluralForm: string): string {
+  return `${count} ${count === 1 ? singular : pluralForm}`;
+}
+
+export function renderSummary(element: HTMLElement, summary: Summary, hiddenStopwords: number): void {
   if (summary.total === 0) {
     element.textContent = '';
     element.hidden = true;
     return;
   }
 
-  const total = `${summary.total} ${summary.total === 1 ? 'palavra' : 'palavras'}`;
-  const unique = `${summary.unique} ${summary.unique === 1 ? 'única' : 'únicas'}`;
-  element.textContent = `${total} · ${unique}`;
+  const parts = [plural(summary.total, 'palavra', 'palavras'), plural(summary.unique, 'única', 'únicas')];
+  if (hiddenStopwords > 0) {
+    parts.push(plural(hiddenStopwords, 'comum oculta', 'comuns ocultas'));
+  }
+  element.textContent = parts.join(' · ');
   element.hidden = false;
 }
