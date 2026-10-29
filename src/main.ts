@@ -1,13 +1,14 @@
 import './styles.css';
 import { filterRows } from './core/filter';
 import { removeStopwords } from './core/stopwords';
-import type { WordCount } from './core/types';
+import type { FetchedPage, WordCount } from './core/types';
 import { countWords, summarize } from './core/wordFrequency';
 import { createChartPanel } from './ui/chartPanel';
-import { setupForm, showError, type FormElements } from './ui/form';
+import { setLoading, setupForm, showError, type FormElements, type Source } from './ui/form';
 import { renderSummary } from './ui/summary';
 import { renderTable } from './ui/table';
 import { downloadCsv, renderFilterStatus } from './ui/toolbar';
+import { fetchPageText, renderSourceInfo } from './ui/urlSource';
 
 function getElement<T extends Element>(selector: string): T {
   const element = document.querySelector<T>(selector);
@@ -17,11 +18,18 @@ function getElement<T extends Element>(selector: string): T {
 
 const formElements: FormElements = {
   form: getElement<HTMLFormElement>('#text-form'),
+  sourceButtons: [...document.querySelectorAll<HTMLButtonElement>('#source-toggle button')],
+  textPanel: getElement<HTMLElement>('#text-panel'),
+  urlPanel: getElement<HTMLElement>('#url-panel'),
   input: getElement<HTMLTextAreaElement>('#text-input'),
+  urlInput: getElement<HTMLInputElement>('#url-input'),
+  urlHint: getElement<HTMLElement>('#url-hint'),
   error: getElement<HTMLElement>('#error-message'),
   counter: getElement<HTMLElement>('#char-counter'),
+  submitButton: getElement<HTMLButtonElement>('#text-form button[type="submit"]'),
   clearButton: getElement<HTMLButtonElement>('#clear-button'),
 };
+const sourceInfo = getElement<HTMLElement>('#source-info');
 const stopwordsToggle = getElement<HTMLInputElement>('#stopwords-toggle');
 const summaryElement = getElement<HTMLElement>('#summary');
 const toolbar = getElement<HTMLElement>('#table-toolbar');
@@ -32,7 +40,7 @@ const tbody = getElement<HTMLTableSectionElement>('#frequency-table tbody');
 const chart = createChartPanel({
   container: getElement<HTMLElement>('#chart-container'),
   caption: getElement<HTMLElement>('#chart-caption'),
-  toggleButtons: [...document.querySelectorAll<HTMLButtonElement>('.view-toggle button')],
+  toggleButtons: [...document.querySelectorAll<HTMLButtonElement>('#chart-container .view-toggle button')],
   barWrapper: getElement<HTMLElement>('#bar-wrapper'),
   barCanvas: getElement<HTMLCanvasElement>('#bar-chart'),
   cloudWrapper: getElement<HTMLElement>('#cloud-wrapper'),
@@ -65,17 +73,55 @@ function renderFilteredTable(): void {
   renderTable(tbody, tableRows, emptyTableMessage());
 }
 
+function showAnalysis(text: string, page: FetchedPage | null): void {
+  allRows = countWords(text);
+  renderSourceInfo(sourceInfo, page);
+  render();
+  if (allRows.length === 0) {
+    showError(formElements, 'Nenhuma palavra encontrada no texto.');
+  }
+}
+
+let pendingRequest: AbortController | null = null;
+
+async function analyzeUrl(url: string): Promise<void> {
+  const request = new AbortController();
+  pendingRequest = request;
+  setLoading(formElements, true);
+  try {
+    const page = await fetchPageText(url, request.signal);
+    showAnalysis(page.text, page);
+  } catch (error) {
+    if (request.signal.aborted) return;
+    showError(formElements, error instanceof Error ? error.message : 'Não foi possível analisar a página.');
+  } finally {
+    if (pendingRequest === request) {
+      pendingRequest = null;
+      setLoading(formElements, false);
+    }
+  }
+}
+
+function cancelPendingRequest(): void {
+  pendingRequest?.abort();
+  pendingRequest = null;
+  setLoading(formElements, false);
+}
+
 setupForm(formElements, {
-  onSubmit: (text) => {
-    allRows = countWords(text);
-    render();
-    if (allRows.length === 0) {
-      showError(formElements, 'Nenhuma palavra encontrada no texto.');
+  onSubmit: (source: Source) => {
+    cancelPendingRequest();
+    if (source.kind === 'text') {
+      showAnalysis(source.text, null);
+    } else {
+      void analyzeUrl(source.url);
     }
   },
   onClear: () => {
+    cancelPendingRequest();
     allRows = [];
     filterInput.value = '';
+    renderSourceInfo(sourceInfo, null);
     render();
   },
 });

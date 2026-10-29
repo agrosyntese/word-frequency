@@ -9,17 +9,37 @@
   <body>
     <main class="container">
       <h1>Word Frequency</h1>
-      <p class="subtitle">Cole um texto e veja quantas vezes cada palavra aparece.</p>
+      <p class="subtitle">Cole um texto ou o endereço de uma página e veja quantas vezes cada palavra aparece.</p>
 
       <form id="text-form" novalidate>
-        <label for="text-input">Texto para analisar</label>
-        <textarea
-          id="text-input"
-          rows="10"
-          maxlength="2048"
-          placeholder="Digite ou cole seu texto aqui (máx. 2048 caracteres)"
-          aria-describedby="char-counter"
-        ></textarea>
+        <span id="source-toggle" class="view-toggle source-toggle" role="group" aria-label="Origem do texto">
+          <button type="button" data-source="text" aria-pressed="true">Texto</button>
+          <button type="button" data-source="url" aria-pressed="false">URL</button>
+        </span>
+        <div id="text-panel" class="source-panel">
+          <label for="text-input">Texto para analisar</label>
+          <textarea
+            id="text-input"
+            rows="10"
+            maxlength="2048"
+            placeholder="Digite ou cole seu texto aqui (máx. 2048 caracteres)"
+            aria-describedby="char-counter"
+          ></textarea>
+        </div>
+        <div id="url-panel" class="source-panel" hidden>
+          <label for="url-input">Endereço da página</label>
+          <input
+            type="url"
+            id="url-input"
+            class="text-field"
+            placeholder="https://exemplo.com/artigo"
+            inputmode="url"
+            autocomplete="url"
+            spellcheck="false"
+            aria-describedby="url-hint"
+          />
+          <p id="url-hint" class="field-hint">O texto visível da página é baixado e analisado (até 100 mil caracteres).</p>
+        </div>
         <div class="form-meta">
           <p id="error-message" class="error" role="alert" hidden></p>
           <p id="char-counter" class="counter">0 / 2048</p>
@@ -31,12 +51,13 @@
         <div class="actions">
           <button type="submit" class="btn btn-primary">Translate</button>
           <button type="button" id="clear-button" class="btn btn-secondary">Limpar</button>
-          <span class="hint">ou <kbd>Ctrl</kbd> + <kbd>Enter</kbd></span>
+          <span class="hint shortcut-hint">ou <kbd>Ctrl</kbd> + <kbd>Enter</kbd></span>
         </div>
       </form>
 
       <section aria-labelledby="results-title">
         <h2 id="results-title">Frequência das palavras</h2>
+        <p id="source-info" class="source-info" hidden></p>
         <p id="summary" class="summary" aria-live="polite"></p>
         <figure id="chart-container" class="chart" hidden>
           <figcaption class="chart-header">

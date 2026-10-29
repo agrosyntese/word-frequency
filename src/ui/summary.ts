@@ -1,7 +1,7 @@
 import type { Summary } from '../core/types';
 
 function plural(count: number, singular: string, pluralForm: string): string {
-  return `${count} ${count === 1 ? singular : pluralForm}`;
+  return `${count.toLocaleString('pt-BR')} ${count === 1 ? singular : pluralForm}`;
 }
 
 export function renderSummary(element: HTMLElement, summary: Summary, hiddenStopwords: number): void {
