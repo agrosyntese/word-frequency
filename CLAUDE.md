@@ -34,8 +34,8 @@ Guia para trabalhar neste repositório. A especificação original está em [APP
 | UI | HTML + CSS + TS puro, sem framework |
 | Gráficos | Chart.js + chartjs-chart-wordcloud |
 | Testes | Vitest |
-| Bônus URL | Função serverless (Vercel) + `cheerio` |
-| Deploy | Vercel |
+| Bônus URL | Função no formato serverless da Vercel + `cheerio` (roda só localmente) |
+| Deploy | GitHub Pages via GitHub Actions: https://agrosyntese.github.io/word-frequency/ |
 
 ## Estrutura de pastas
 
@@ -43,6 +43,10 @@ Guia para trabalhar neste repositório. A especificação original está em [APP
 WORLD_FRE/
 ├── APP.MD                  # especificação original
 ├── CLAUDE.md
+├── README.md               # apresentação do projeto no GitHub
+├── .github/workflows/
+│   └── deploy.yml          # testes + build estático + publicação no GitHub Pages
+├── docs/screenshots/       # imagens usadas no README
 ├── index.html              # ponto de entrada do Vite
 ├── package.json
 ├── tsconfig.json
@@ -56,6 +60,7 @@ WORLD_FRE/
 │   └── *.test.ts
 ├── src/
 │   ├── main.ts             # inicialização e ligação dos eventos
+│   ├── env.d.ts            # tipos das variáveis VITE_* (ex.: VITE_URL_SOURCE)
 │   ├── styles.css
 │   ├── core/               # lógica pura, sem DOM
 │   │   ├── wordFrequency.ts
@@ -92,7 +97,12 @@ npm run build        # build de produção em dist/
 npm run preview      # servir o build localmente, também com /api/fetch-text
 ```
 
-A API roda localmente por um plugin em `vite.config.ts` que chama o mesmo `api/fetch-text.ts` usado na Vercel. Não é preciso Vercel CLI para desenvolver.
+A API roda localmente por um plugin em `vite.config.ts` que chama `api/fetch-text.ts`. Não é preciso Vercel CLI para desenvolver.
+
+### Publicação (GitHub Pages)
+- Cada push em `main` roda `.github/workflows/deploy.yml`: typecheck, testes, build e publicação
+- O GitHub Pages é só estático, então o build publicado usa `VITE_URL_SOURCE=off` (esconde o seletor Texto | URL) e `BASE_PATH=/word-frequency/`
+- Para reproduzir o build publicado no Git Bash do Windows, use `MSYS_NO_PATHCONV=1 BASE_PATH=/word-frequency/ VITE_URL_SOURCE=off npm run build`; sem `MSYS_NO_PATHCONV`, o Git Bash converte o caminho base num caminho do Windows
 
 Antes de considerar uma tarefa concluída, rode `npm run typecheck` e `npm test -- --run`.
 
@@ -106,7 +116,7 @@ Antes de considerar uma tarefa concluída, rode `npm run typecheck` e `npm test 
 - [x] **Fase 4.1: Nuvem de palavras**: seletor Barras | Nuvem, nuvem com as 60 palavras mais frequentes (chartjs-chart-wordcloud)
 - [x] **Fase 5: Extras (opcional)**: stopwords PT/EN com opção de ligar e desligar, filtro na tabela, exportar CSV
 - [x] **Fase 6: URL**: `api/fetch-text.ts` busca o HTML, remove `script`/`style`/`nav` e extrai o texto. Alternância Texto/URL no front, com loading e erros
-- [ ] **Fase 7: Deploy**: publicar na Vercel, README com capturas de tela
+- [ ] **Fase 7: Deploy**: publicar no GitHub Pages (sem o modo URL), README com capturas de tela
 
 Marque a fase como concluída neste arquivo ao terminá-la.
 

@@ -16,6 +16,12 @@ function getElement<T extends Element>(selector: string): T {
   return element;
 }
 
+// Static builds (GitHub Pages) have no /api/fetch-text, so only text input is offered there.
+if (import.meta.env.VITE_URL_SOURCE === 'off') {
+  getElement('#source-toggle').remove();
+  getElement('#subtitle').textContent = 'Cole um texto e veja quantas vezes cada palavra aparece.';
+}
+
 const formElements: FormElements = {
   form: getElement<HTMLFormElement>('#text-form'),
   sourceButtons: [...document.querySelectorAll<HTMLButtonElement>('#source-toggle button')],
