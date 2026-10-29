@@ -197,3 +197,20 @@ td:first-child {
     width: 6rem;
   }
 }
+
+.chart {
+  margin: 0 0 1.5rem;
+  padding: 1rem;
+  border: 1px solid var(--color-border);
+  border-radius: 6px;
+}
+
+.chart figcaption {
+  margin-bottom: 0.5rem;
+  font-weight: 600;
+}
+
+.chart-canvas {
+  position: relative;
+  width: 100%;
+}

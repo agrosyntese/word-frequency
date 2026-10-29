@@ -34,6 +34,12 @@
       <section aria-labelledby="results-title">
         <h2 id="results-title">Frequência das palavras</h2>
         <p id="summary" class="summary" aria-live="polite"></p>
+        <figure id="chart-container" class="chart" hidden>
+          <figcaption>As 15 palavras mais frequentes</figcaption>
+          <div id="chart-wrapper" class="chart-canvas">
+            <canvas id="frequency-chart" role="img"></canvas>
+          </div>
+        </figure>
         <div class="table-wrapper">
           <table id="frequency-table">
             <thead>

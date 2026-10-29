@@ -1,6 +1,7 @@
 import './styles.css';
 import type { WordCount } from './core/types';
 import { countWords, summarize } from './core/wordFrequency';
+import { createFrequencyChart } from './ui/chart';
 import { setupForm, showError, type FormElements } from './ui/form';
 import { renderSummary } from './ui/summary';
 import { renderTable } from './ui/table';
@@ -20,10 +21,16 @@ const formElements: FormElements = {
 };
 const summaryElement = getElement<HTMLElement>('#summary');
 const tbody = getElement<HTMLTableSectionElement>('#frequency-table tbody');
+const chart = createFrequencyChart({
+  container: getElement<HTMLElement>('#chart-container'),
+  canvasWrapper: getElement<HTMLElement>('#chart-wrapper'),
+  canvas: getElement<HTMLCanvasElement>('#frequency-chart'),
+});
 
 function showResults(rows: WordCount[]): void {
   renderTable(tbody, rows);
   renderSummary(summaryElement, summarize(rows));
+  chart.update(rows);
 }
 
 setupForm(formElements, {
