@@ -84,7 +84,7 @@ Antes de considerar uma tarefa concluída, rode `npm run typecheck` e `npm test 
 - [x] **Fase 0: Setup**: projeto Vite + TS, Vitest, scripts do `package.json`, Git
 - [x] **Fase 1: Lógica**: `countWords(text)` pura em `src/core/`, com testes (acentos, pontuação, maiúsculas, vazio, empates)
 - [x] **Fase 2: MVP**: textarea com `maxlength=2048`, botão, tabela, erro para texto vazio. *Ao final, todas as user stories estão cumpridas*
-- [ ] **Fase 3: UX**: contador de caracteres, botão Limpar, totais, layout responsivo, acessibilidade, estado vazio da tabela
+- [x] **Fase 3: UX**: contador de caracteres, botão Limpar, totais, layout responsivo, acessibilidade, estado vazio da tabela
 - [ ] **Fase 4: Gráfico**: barras com as 15 palavras mais frequentes (Chart.js), atualizado a cada análise
 - [ ] **Fase 5: Extras (opcional)**: stopwords PT/EN com opção de ligar e desligar, filtro na tabela, exportar CSV
 - [ ] **Fase 6: URL**: `api/fetch-text.ts` busca o HTML, remove `script`/`style`/`nav` e extrai o texto. Alternância Texto/URL no front, com loading e erros

@@ -1,4 +1,4 @@
-import type { WordCount } from './types';
+import type { Summary, WordCount } from './types';
 
 export const MAX_CHARS = 2048;
 
@@ -19,4 +19,9 @@ export function countWords(text: string): WordCount[] {
   return [...counts]
     .map(([word, count]) => ({ word, count }))
     .sort((a, b) => b.count - a.count || a.word.localeCompare(b.word));
+}
+
+export function summarize(rows: WordCount[]): Summary {
+  const total = rows.reduce((sum, { count }) => sum + count, 0);
+  return { total, unique: rows.length };
 }

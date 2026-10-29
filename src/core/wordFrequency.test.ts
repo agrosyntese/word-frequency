@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { countWords, extractWords } from './wordFrequency';
+import { countWords, extractWords, summarize } from './wordFrequency';
 
 describe('extractWords', () => {
   it('ignores punctuation', () => {
@@ -59,5 +59,15 @@ describe('countWords', () => {
 
   it('returns an empty list for empty text', () => {
     expect(countWords('')).toEqual([]);
+  });
+});
+
+describe('summarize', () => {
+  it('returns total and unique word counts', () => {
+    expect(summarize(countWords('o gato e o rato e o cão'))).toEqual({ total: 8, unique: 5 });
+  });
+
+  it('returns zeros for no words', () => {
+    expect(summarize([])).toEqual({ total: 0, unique: 0 });
   });
 });

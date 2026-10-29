@@ -1,6 +1,8 @@
 import './styles.css';
-import { countWords } from './core/wordFrequency';
-import { setupForm, showError } from './ui/form';
+import type { WordCount } from './core/types';
+import { countWords, summarize } from './core/wordFrequency';
+import { setupForm, showError, type FormElements } from './ui/form';
+import { renderSummary } from './ui/summary';
 import { renderTable } from './ui/table';
 
 function getElement<T extends Element>(selector: string): T {
@@ -9,15 +11,30 @@ function getElement<T extends Element>(selector: string): T {
   return element;
 }
 
-const form = getElement<HTMLFormElement>('#text-form');
-const input = getElement<HTMLTextAreaElement>('#text-input');
-const error = getElement<HTMLElement>('#error-message');
+const formElements: FormElements = {
+  form: getElement<HTMLFormElement>('#text-form'),
+  input: getElement<HTMLTextAreaElement>('#text-input'),
+  error: getElement<HTMLElement>('#error-message'),
+  counter: getElement<HTMLElement>('#char-counter'),
+  clearButton: getElement<HTMLButtonElement>('#clear-button'),
+};
+const summaryElement = getElement<HTMLElement>('#summary');
 const tbody = getElement<HTMLTableSectionElement>('#frequency-table tbody');
 
-setupForm({ form, input, error }, (text) => {
-  const rows = countWords(text);
-  if (rows.length === 0) {
-    showError(input, error, 'Nenhuma palavra encontrada no texto.');
-  }
+function showResults(rows: WordCount[]): void {
   renderTable(tbody, rows);
+  renderSummary(summaryElement, summarize(rows));
+}
+
+setupForm(formElements, {
+  onSubmit: (text) => {
+    const rows = countWords(text);
+    showResults(rows);
+    if (rows.length === 0) {
+      showError(formElements, 'Nenhuma palavra encontrada no texto.');
+    }
+  },
+  onClear: () => showResults([]),
 });
+
+showResults([]);

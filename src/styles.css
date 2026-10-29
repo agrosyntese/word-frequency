@@ -6,6 +6,7 @@
   --color-accent: #0969da;
   --color-accent-hover: #0550ae;
   --color-error: #cf222e;
+  --color-warning: #9a6700;
   font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
   color: var(--color-text);
   line-height: 1.5;
@@ -58,25 +59,81 @@ textarea[aria-invalid='true'] {
   border-color: var(--color-error);
 }
 
+.form-meta {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  font-size: 0.875rem;
+}
+
 .error {
   margin: 0;
   color: var(--color-error);
 }
 
-button {
-  align-self: flex-start;
+.counter {
+  margin: 0 0 0 auto;
+  color: var(--color-muted);
+  font-variant-numeric: tabular-nums;
+}
+
+.counter-warning {
+  color: var(--color-warning);
+  font-weight: 600;
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.btn {
   padding: 0.6rem 1.5rem;
-  border: none;
   border-radius: 6px;
-  background: var(--color-accent);
-  color: #fff;
   font: inherit;
   font-weight: 600;
   cursor: pointer;
 }
 
-button:hover {
+.btn-primary {
+  border: 1px solid var(--color-accent);
+  background: var(--color-accent);
+  color: #fff;
+}
+
+.btn-primary:hover {
   background: var(--color-accent-hover);
+}
+
+.btn-secondary {
+  border: 1px solid var(--color-border);
+  background: var(--color-surface);
+  color: var(--color-text);
+}
+
+.btn-secondary:hover {
+  background: var(--color-border);
+}
+
+.hint {
+  color: var(--color-muted);
+  font-size: 0.875rem;
+}
+
+kbd {
+  padding: 0.1rem 0.35rem;
+  border: 1px solid var(--color-border);
+  border-radius: 4px;
+  background: var(--color-surface);
+  font-family: inherit;
+  font-size: 0.8rem;
+}
+
+.summary {
+  margin: 0 0 1rem;
+  color: var(--color-muted);
 }
 
 button:focus-visible,
@@ -105,4 +162,38 @@ th:last-child,
 td:last-child {
   text-align: right;
   width: 8rem;
+}
+
+td.empty-state {
+  padding: 1.5rem 0.75rem;
+  color: var(--color-muted);
+  text-align: center;
+  width: auto;
+}
+
+.table-wrapper {
+  overflow-x: auto;
+}
+
+td:first-child {
+  overflow-wrap: anywhere;
+}
+
+@media (max-width: 480px) {
+  .container {
+    padding: 1.25rem 0.75rem;
+  }
+
+  .btn {
+    flex: 1;
+  }
+
+  .hint {
+    display: none;
+  }
+
+  th:last-child,
+  td:last-child {
+    width: 6rem;
+  }
 }

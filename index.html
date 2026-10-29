@@ -18,22 +18,33 @@
           rows="10"
           maxlength="2048"
           placeholder="Digite ou cole seu texto aqui (máx. 2048 caracteres)"
+          aria-describedby="char-counter"
         ></textarea>
-        <p id="error-message" class="error" role="alert" hidden></p>
-        <button type="submit">Translate</button>
+        <div class="form-meta">
+          <p id="error-message" class="error" role="alert" hidden></p>
+          <p id="char-counter" class="counter">0 / 2048</p>
+        </div>
+        <div class="actions">
+          <button type="submit" class="btn btn-primary">Translate</button>
+          <button type="button" id="clear-button" class="btn btn-secondary">Limpar</button>
+          <span class="hint">ou <kbd>Ctrl</kbd> + <kbd>Enter</kbd></span>
+        </div>
       </form>
 
       <section aria-labelledby="results-title">
         <h2 id="results-title">Frequência das palavras</h2>
-        <table id="frequency-table">
-          <thead>
-            <tr>
-              <th scope="col">Palavra</th>
-              <th scope="col">Frequência</th>
-            </tr>
-          </thead>
-          <tbody></tbody>
-        </table>
+        <p id="summary" class="summary" aria-live="polite"></p>
+        <div class="table-wrapper">
+          <table id="frequency-table">
+            <thead>
+              <tr>
+                <th scope="col">Palavra</th>
+                <th scope="col">Frequência</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
       </section>
     </main>
     <script type="module" src="/src/main.ts"></script>
