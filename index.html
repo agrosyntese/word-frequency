@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <title>Word Frequency</title>
+  </head>
+  <body>
+    <main class="container">
+      <h1>Word Frequency</h1>
+      <p class="subtitle">Cole um texto e veja quantas vezes cada palavra aparece.</p>
+
+      <form id="text-form" novalidate>
+        <label for="text-input">Texto para analisar</label>
+        <textarea
+          id="text-input"
+          rows="10"
+          maxlength="2048"
+          placeholder="Digite ou cole seu texto aqui (máx. 2048 caracteres)"
+        ></textarea>
+        <p id="error-message" class="error" role="alert" hidden></p>
+        <button type="submit">Translate</button>
+      </form>
+
+      <section aria-labelledby="results-title">
+        <h2 id="results-title">Frequência das palavras</h2>
+        <table id="frequency-table">
+          <thead>
+            <tr>
+              <th scope="col">Palavra</th>
+              <th scope="col">Frequência</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </section>
+    </main>
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>
